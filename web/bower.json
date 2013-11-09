@@ -1,0 +1,23 @@
+{
+  "name": "bazinga",
+  "version": "0.0.0",
+  "homepage": "https://github.com/nko4/bazinga",
+  "authors": [
+    "bazinga"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Ink": "~2.2.1",
+    "rickshaw": "~1.4.5",
+    "d3": "~3.3.9",
+    "jquery-ui": "~1.10.3"
+  }
+}

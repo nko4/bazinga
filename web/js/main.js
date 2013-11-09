@@ -102,8 +102,8 @@ $(document).ready(function() {
 
   var socket = io.connect();
   socket.on('sample', function (sample) {
-    console.log(sample);
-    seriesData[0].push({ x: sample.x / 1000, y: sample.y });
+    if (sample.totals) { return; } // Ignore total lines
+    seriesData[0].push({ x: sample.time / 1000, y: sample.data['0fill'] });
     if (seriesData[0].length === 1) {
       graph = createChart();
     } else {

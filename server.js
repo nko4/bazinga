@@ -4,8 +4,10 @@ require('nko')('SJwehNth74wTmMCa');
 var fs = require('fs');
 var restify = require('restify');
 var socketio = require('socket.io');
+var carrier = require('carrier');
 
 var EventEmitter = require('events').EventEmitter;
+var spawn = require('child_process').spawn;
 
 var isProduction = (process.env.NODE_ENV === 'production');
 var port = (isProduction ? 80 : 8000);
@@ -47,12 +49,41 @@ server.listen(port, function (err) {
   console.log('Server running at http://0.0.0.0:' + port + '/');
 });
 
-var lastSample = 50;
-setInterval(function emitSample() {
-  var newSample = lastSample + (2 * Math.random() - 1) * (Math.random() * 50);
-  newSample = Math.max(0, Math.min(newSample, 100));
-  var event = { x: new Date().getTime(), y: newSample };
-  lastSample = newSample;
+var updateInterval = 1;
+function createMacVmStatConfig() {
+  function MacVmStatConfig() {
+    this.command = 'vm_stat';
+    this.args = [updateInterval];
+    this.headers = null;
+    this._lastWasHeader = false;
+  }
 
-  statEmitter.emit('sample', event);
-}, 1000);
+  MacVmStatConfig.prototype.lineParser = function lineParser(line) {
+    var self = this;
+
+    if (line.match(/Mach Virtual Memory Statistics/)) { return; }
+
+    line = line.trim().split(/\s+/);
+    if (line[0][0] > '9') { // headers
+      this.headers = line;
+      this._lastWasHeader = true;
+      statEmitter.emit('headers', this.headers);
+    } else {
+      statEmitter.emit('sample', {
+        time: new Date().getTime(),
+        totals: this._lastWasHeader,
+        data: line.reduce(function (event, value, idx) {
+          event[self.headers[idx]] = parseInt(value, 10);
+          return event;
+        }, {})
+      });
+      this._lastWasHeader = false;
+    }
+  }
+
+  return new MacVmStatConfig();
+}
+
+var config = createMacVmStatConfig();
+var p = spawn(config.command, config.args);
+carrier.carry(p.stdout, function (line) { config.lineParser(line); });

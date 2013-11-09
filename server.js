@@ -16,11 +16,22 @@ server.get(/\/.*/, restify.serveStatic({
   default: 'index.html'
 }));
 
+var connections = [];
+var samples = [];
+
 io.sockets.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-            console.log(data);
-    });
+  var connection = {
+    socket: socket,
+    send: function sendSample(sample) {
+      socket.emit('sample', sample);
+    }
+  };
+
+  connections.push(connection);
+
+  socket.on('disconnect', function () {
+    connections.splice(connections.indexOf(connection), 1);
+  });
 });
 
 server.listen(port, function (err) {
@@ -36,3 +47,15 @@ server.listen(port, function (err) {
 
   console.log('Server running at http://0.0.0.0:' + port + '/');
 });
+
+var lastSample = 50;
+setInterval(function emitSample() {
+  var newSample = lastSample + (2 * Math.random() - 1) * (Math.random() * 50);
+  newSample = Math.max(0, Math.min(newSample, 100));
+  var event = { x: new Date().getTime(), y: newSample };
+  lastSample = newSample;
+
+  connections.forEach(function (connection) {
+    connection.send(event);
+  });
+}, 1000);

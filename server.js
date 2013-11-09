@@ -5,6 +5,8 @@ var fs = require('fs');
 var restify = require('restify');
 var socketio = require('socket.io');
 
+var EventEmitter = require('events').EventEmitter;
+
 var isProduction = (process.env.NODE_ENV === 'production');
 var port = (isProduction ? 80 : 8000);
 
@@ -16,21 +18,18 @@ server.get(/\/.*/, restify.serveStatic({
   default: 'index.html'
 }));
 
-var connections = [];
-var samples = [];
+var statEmitter = new EventEmitter();
 
+io.set('log level', isProduction ? 1 : 2);
 io.sockets.on('connection', function (socket) {
-  var connection = {
-    socket: socket,
-    send: function sendSample(sample) {
-      socket.emit('sample', sample);
-    }
-  };
+  function sendSample(sample) {
+    socket.emit('sample', sample);
+  }
 
-  connections.push(connection);
+  statEmitter.on('sample', sendSample)
 
   socket.on('disconnect', function () {
-    connections.splice(connections.indexOf(connection), 1);
+    statEmitter.removeListener('sample', sendSample);
   });
 });
 
@@ -55,7 +54,5 @@ setInterval(function emitSample() {
   var event = { x: new Date().getTime(), y: newSample };
   lastSample = newSample;
 
-  connections.forEach(function (connection) {
-    connection.send(event);
-  });
+  statEmitter.emit('sample', event);
 }, 1000);

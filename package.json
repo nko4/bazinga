@@ -11,7 +11,8 @@
     "url": "git@github.com:nko4/bazinga.git"
   },
   "dependencies": {
-    "nko": "*"
+    "nko": "*",
+    "restify": "~2.6.0"
   },
   "engines": {
     "node": "0.10.x"

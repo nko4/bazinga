@@ -1,115 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>
-      Bazinga
-  </title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="shortcut icon" href="components/Ink/img/ink-favicon.ico">
-  <link rel="apple-touch-icon-precomposed" href="components/Ink/img/touch-icon.57.png">
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="components/Ink/img/touch-icon.72.png">
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="components/Ink/img/touch-icon.114.png">
-  <link rel="apple-touch-startup-image" href="components/Ink/img/splash.320x460.png"
-  media="screen and (min-device-width: 200px) and (max-device-width: 320px) and (orientation:portrait)">
-  <link rel="apple-touch-startup-image" href="components/Ink/img/splash.768x1004.png"
-  media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
-  <link rel="apple-touch-startup-image" href="components/Ink/img/splash.1024x748.png"
-  media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>
+            Bazinga
+        </title>
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <link rel="shortcut icon" href="components/Ink/img/ink-favicon.ico">
+        <link rel="apple-touch-icon-precomposed" href="components/Ink/img/touch-icon.57.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="components/Ink/img/touch-icon.72.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="components/Ink/img/touch-icon.114.png">
+        <link rel="apple-touch-startup-image" href="components/Ink/img/splash.320x460.png"
+        media="screen and (min-device-width: 200px) and (max-device-width: 320px) and (orientation:portrait)">
+        <link rel="apple-touch-startup-image" href="components/Ink/img/splash.768x1004.png"
+        media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+        <link rel="apple-touch-startup-image" href="components/Ink/img/splash.1024x748.png"
+        media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
 
-  <link rel="stylesheet" type="text/css" href="components/Ink/css/ink.css">
-  <link rel="stylesheet" type="text/css" href="components/jquery-ui/themes/base/jquery-ui.css">
-  <link rel="stylesheet" type="text/css" href="components/rickshaw/rickshaw.min.css">
+        <link rel="stylesheet" type="text/css" href="components/Ink/css/ink.css">
+        <link rel="stylesheet" type="text/css" href="components/jquery-ui/themes/base/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="components/rickshaw/rickshaw.min.css">
 
-  <!--[if IE 7 ]>
-      <link rel="stylesheet" href="components/Ink/css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
-  <![endif]-->
+        <!--[if IE 7 ]>
+              <link rel="stylesheet" href="components/Ink/css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
+          <![endif]-->
 
-  <style type="text/css">
-  body {
-      background: #ededed;
-  }
-     header {
-      padding: 2em 0;
-      margin-bottom: 2em;
-     }
-     header h1 {
-      font-size: 2em;
-     }
-     header h1 small:before  {
-          content: "|";
-          margin: 0 0.5em;
-          font-size: 1.6em;
-     }
-     footer {
-      background: #ccc;
-      color: #0003;
-     }
-     footer p {
-      padding: 0.5em 1em 0.5em 0;
-      margin: 0;
-     }
-  </style>
-</head>
-<body>
-  <div class="ink-grid">
-    <header>
-      <h1 class="pull-left medium-100 small-100">
-          Statzinga<small>vmstat the shit out of your servers</small><iframe src="http://nodeknockout.com/iframe/bazinga" frameborder=0 scrolling=no allowtransparency=true width=115 height=25></iframe>
-      </h1>
-      <nav class="ink-navigation pull-right medium-100 small-100">
-        <ul class="menu horizontal black shadowed">
-          <li class="active"><a href="#">item 1</a></li>
-          <li><a href="#">item 2</a></li>
-          <li><a href="#">item 3</a></li>
-        </ul>
-      </nav>
-    </header>
-    <div class="column-group">
-      <div class="large-80 medium-80 small-100">
-        <h2>bazinga-host</h2>
-        <div id="chart_container">
-          <div id="chart"></div>
-          <div id="timeline"></div>
-          <div id="slider"></div>
+        <style type="text/css">
+        body {
+            background: #ededed;
+        }
+        header {
+            padding: 2em 0;
+            margin-bottom: 2em;
+        }
+        header h1 {
+            font-size: 2em;
+        }
+        header h1 small:before  {
+            content: "|";
+            margin: 0 0.5em;
+            font-size: 1.6em;
+        }
+        footer {
+            background: #ccc;
+            color: #0003;
+        }
+        footer p {
+            padding: 0.5em 1em 0.5em 0;
+            margin: 0;
+        }
+        </style>
+    </head>
+
+    <body>
+        <div class="ink-grid">
+            <header>
+                <h1 class="pull-left medium-100 small-100">
+                    Statzinga<small>vmstat the shit out of your servers</small>
+                    <iframe src="http://nodeknockout.com/iframe/bazinga" frameborder=0 scrolling=no allowtransparency=true width=115 height=25></iframe>
+                </h1>
+                <nav class="ink-navigation pull-right medium-100 small-100">
+                    <ul class="menu horizontal black shadowed">
+                        <li class="active"><a href="#">Host 1</a></li>
+                        <li><a href="#">Host 2</a></li>
+                        <li><a href="#">Host 3</a></li>
+                    </ul>
+                </nav>
+            </header>
+        <div class="column-group vertical-space">
+            <div class="large-80 medium-80 small-100">
+                <h2>bazinga-host</h2>
+                <div id="chart_container">
+                    <div id="chart"></div>
+                    <div id="timeline"></div>
+                    <div id="slider"></div>
+                </div>
+            </div>
+            <div id="legend" class="large-20 medium-20 small-100"></div>
         </div>
-      </div>
-      <div id="legend" class="large-20 medium-20 small-100"></div>
+        <div class="column-group gutters vertical-space">
+            <div class="vertical-space"></div>
+            <div class="large-50 medium-50 small-100">
+                <h3>heading</h3>
+                <p>"Red is not the right word," was the reply. "The plague was scarlet.  The whole face and body turned scarlet in an hour's time. Don't I  know? Didn't I see enough of it? And I am telling you it was scarlet  because&mdash;well, because it was scarlet. There is no other word for it."</p>
+            </div>
+            <div class="large-50 medium-50 small-100">
+                <h3>heading</h3>
+                <p>"Red is not the right word," was the reply. "The plague was scarlet.  The whole face and body turned scarlet in an hour's time. Don't I  know? Didn't I see enough of it? And I am telling you it was scarlet  because&mdash;well, because it was scarlet. There is no other word for it."</p>
+            </div>
+        </div>
     </div>
-    <div class="column-group gutters">
-      <div class="large-50 medium-50 small-100">
-        <h3>heading</h3>
-        <p>"Red is not the right word," was the reply. "The plague was scarlet.  The whole face and body turned scarlet in an hour's time. Don't I  know? Didn't I see enough of it? And I am telling you it was scarlet  because&mdash;well, because it was scarlet. There is no other word for it."</p>
-      </div>
-      <div class="large-50 medium-50 small-100">
-        <h3>heading</h3>
-        <p>"Red is not the right word," was the reply. "The plague was scarlet.  The whole face and body turned scarlet in an hour's time. Don't I  know? Didn't I see enough of it? And I am telling you it was scarlet  because&mdash;well, because it was scarlet. There is no other word for it."</p>
-      </div>
-    </div>
-  </div>
-  <footer>
-  <div class="ink-grid">
-    <nav class="ink-navigation push-left medium-100 small-100 small-push-left">
-      <ul class="menu horizontal">
-        <li class="active"><a href="#">item</a></li>
-        <li><a href="#">item</a></li>
-        <li><a href="#">item</a></li>
-      </ul>
-    </nav>
-    <p class="push-right small-100">some text</p>
-  </div>
-  </footer>
+    <footer>
+        <div class="ink-grid">
+            <nav class="ink-navigation push-left medium-100 small-100 small-push-left">
+                <ul class="menu horizontal">
+                    <li class="active"><a href="#">item</a></li>
+                    <li><a href="#">item</a></li>
+                    <li><a href="#">item</a></li>
+                </ul>
+            </nav>
+            <p class="push-right small-100">Copyright &copy; the NKO4 Bazinga Team</p>
+        </div>
+    </footer>
 
-  <script type="text/javascript" src="components/jquery/jquery.min.js"></script>
-  <script type="text/javascript" src="components/jquery-ui/ui/jquery-ui.js"></script>
-  <script type="text/javascript" src="components/d3/d3.min.js"></script>
-  <script type="text/javascript" src="components/rickshaw/rickshaw.js"></script>
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
-</body>
-</html>
+    <script type="text/javascript" src="components/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="components/jquery-ui/ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="components/d3/d3.min.js"></script>
+    <script type="text/javascript" src="components/rickshaw/rickshaw.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    </body>
+    </html>

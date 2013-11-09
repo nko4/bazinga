@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "nko": "*",
-    "restify": "~2.6.0"
+    "restify": "~2.6.0",
+    "socket.io": "~0.9.16"
   },
   "engines": {
     "node": "0.10.x"

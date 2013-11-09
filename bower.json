@@ -10,7 +10,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
+    "web/components",
     "test",
     "tests"
   ],
@@ -19,5 +19,6 @@
     "rickshaw": "~1.4.5",
     "d3": "~3.3.9",
     "jquery-ui": "~1.10.3"
-  }
+  },
+  "directory" : "web/components"
 }

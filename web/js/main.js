@@ -4,7 +4,7 @@ angular.module('statCharterApp', ['btford.socket-io']).
   }]).
   controller('StatCharterController', ['$scope',
                              function ( $scope ) {
-    function createChart(element, fields, data) {
+    function createChart(element, fields, data, chartType) {
       var palette = new Rickshaw.Color.Palette( { scheme: 'spectrum2000' } );
 
       // instantiate our graph!
@@ -14,19 +14,19 @@ angular.module('statCharterApp', ['btford.socket-io']).
         width: 400,
         height: 200,
         renderer: 'area',
-        stroke: true,
+        stroke: chartType !== 'stacked',
         preserve: true,
         series: data.map(function (serie, idx) {
           return {
             color: palette.color(),
             data: serie,
             name: fields[idx],
-            stroke: true
+            stroke: chartType !== 'stacked'
           };
         })
       } );
 
-      graph.renderer.unstack = true;
+      if (chartType !== 'stacked') graph.renderer.unstack = true;
       graph.render();
 
       var slider = new Rickshaw.Graph.RangeSlider( {
@@ -125,7 +125,8 @@ angular.module('statCharterApp', ['btford.socket-io']).
         $scope.charts[chartIdx].graph =
           createChart($('#' + chartName),
                       $scope.config.charts[chartName].fields,
-                      $scope.charts[chartIdx].data
+                      $scope.charts[chartIdx].data,
+                      $scope.config.charts[chartName].type
                      );
       });
 

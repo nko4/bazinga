@@ -45,15 +45,17 @@
       </nav>
     </header>
     <div id="{{chart.name}}" ng-repeat="chart in charts" class="column-group vertical-space">
-      <div class="large-80 medium-80 small-100">
+      <div class="large-40 medium-40 small-100">
         <h2>{{chart.name}}</h2>
-        <div class="chart-container">
+        <div id="chart_container">
           <div class="chart"></div>
           <div class="timeline"></div>
           <div class="slider"></div>
         </div>
       </div>
-      <div class="legend large-20 medium-20 small-100"></div>
+      <div class="large-60 medium-60 small-100">
+        <div class="legend"></div>
+      </div>
     </div>
   </div>
   <footer>

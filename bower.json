@@ -19,7 +19,7 @@
     "rickshaw": "~1.4.5",
     "d3": "~3.3.9",
     "jquery-ui": "~1.10.3",
-    "angular": "~1.2.0",
+    "angular": "1.2.0",
     "angular-socket-io": "~0.2.0",
     "lodash": "~2.2.1"
   }

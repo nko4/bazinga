@@ -12,7 +12,8 @@ var EventEmitter = require('events').EventEmitter;
 var spawn = require('child_process').spawn;
 
 process.on('uncaughtException', function(err) {
-  console.log('Caught exception: ' + err);
+  console.log('Caught exception: ' + err + '\n' + err.stack);
+  process.exit(1);
 });
 
 var profiles = fs.readdirSync(__dirname + '/lib/profiles').map(function (filename) {
@@ -94,34 +95,41 @@ function lineParser(config, statEmitter) {
   };
 }
 
-function runUname(callback) {
-  var unameProcess = spawn('uname', ['-a']);
+function concatArgs(via, command, args) {
+  if (via) {
+    args = via.split(' ').concat(command).concat(args);
+    command = args.shift();
+  }
+  return {command: command, args: args };
+}
+
+function getUname(via, callback) {
+  var spawnArgs = concatArgs(via, 'uname', ['-a']);
+  var unameProcess = spawn(spawnArgs.command, spawnArgs.args);
   var output = '';
-  unameProcess.stdout.on('data', function (data) {
-    output += data;
-  });
+  unameProcess.stdout.on('data', function (data) { output += data; });
   unameProcess.on('close', function () {
     uname = output;
     callback(uname);
   });
 }
 
-function spawnTool(config, statEmitter) {
-  var p = spawn(config.command, config.args);
+function spawnTool(via, config, statEmitter) {
+  var spawnArgs = concatArgs(via, config.command, config.args);
+  var p = spawn(spawnArgs.command, spawnArgs.args);
   carrier.carry(p.stdout, lineParser(config, statEmitter));
 }
 
-runUname(function (uname) {
-  var argv = require('optimist').
-    usage('Watch system stats.\nUsage: $0 [--no-open] <tool> [interval]').
-    describe('open', 'Open browser').
-    boolean('open').
-    // describe('interval', 'Uptdate interval').
-    default('open', true).
-    argv;
+var argv = require('optimist').
+  usage('Watch system stats.\nUsage: $0 [--no-open] <tool> [interval]').
+  describe('open', 'Open browser').
+  describe('via', 'Execute tool via command, eg: --via "ssh me@my.server"').
+  boolean('open').
+  string('via', null).
+  default('open', true).
+  argv;
 
-  console.log('argv: ', argv);
-
+getUname(argv.via, function (uname) {
   var tool = argv._[0];
   var updateInterval = argv._.length > 1 ? parseInt(argv._[1], 10) : 1;
 
@@ -149,7 +157,7 @@ runUname(function (uname) {
   setupSocketIO(server, config, isProduction, statEmitter);
   runServer(server, port);
 
-  spawnTool(config, statEmitter);
+  spawnTool(argv.via, config, statEmitter);
 
   if (!isProduction && argv.open) {
     require('open')('http://127.0.0.1:' + port);

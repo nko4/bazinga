@@ -24,7 +24,7 @@ var profiles = fs.readdirSync(__dirname + '/lib/profiles').map(function (filenam
 
 function createConfig(uname, json, options) {
   var config = json ?
-    JSON.parse(fs.readFileSync(json)) :
+    JSON.parse(fs.readFileSync(json).toString()) :
     _.cloneDeep(_.find(profiles, function (profile) {
       return profile.tool === options.tool &&
              uname.match(profile.unamePattern);
@@ -35,6 +35,27 @@ function createConfig(uname, json, options) {
   config.args = config.args.map(function (arg) {
     return Handlebars.compile(arg)(options);
   });
+
+  config.ignoreColumns = (config.ignoreColumns || []).reduce(function (map, column) {
+    map[column] = true;
+    return map;
+  }, {});
+
+  var columnIndex = 0;
+  config.renderingConfig.order.forEach(function (chart) {
+    config.renderingConfig.charts[chart].fields.forEach(function (field) {
+      if (config.ignoreColumns[field]) {
+        config.ignoreColumns[field] = columnIndex;
+      }
+      columnIndex++;
+    });
+  });
+
+  config.ignoreColumns = _.values(config.ignoreColumns).
+    filter(function (x) { return x !== true }).
+    sort();
+
+  console.log('config.ignoreColumns:', config.ignoreColumns);
 
   return config;
 }

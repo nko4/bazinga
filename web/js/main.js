@@ -10,9 +10,9 @@ angular.module('statCharterApp', ['btford.socket-io']).
       // instantiate our graph!
 
       var graph = new Rickshaw.Graph( {
-        element: element[0],
-        width: 700,
-        height: 400,
+        element: element.find('.chart')[0],
+        width: 400,
+        height: 200,
         renderer: 'area',
         stroke: true,
         preserve: true,

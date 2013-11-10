@@ -42,11 +42,6 @@ angular.module('statCharterApp', ['btford.socket-io']).
           }
       } );
 
-      var annotator = new Rickshaw.Graph.Annotate( {
-          graph: graph,
-          element: element.find('.timeline')[0]
-      } );
-
       var legend = new Rickshaw.Graph.Legend( {
           graph: graph,
           element: element.find('.legend')[0]
@@ -90,11 +85,6 @@ angular.module('statCharterApp', ['btford.socket-io']).
       } );
 
       yAxis.render();
-
-      // var controls = new RenderControls( {
-      //     element: document.querySelector('form'),
-      //     graph: graph
-      // } );
 
       return graph;
     }

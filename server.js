@@ -41,7 +41,7 @@ function setupSocketIO(server, config, isProduction, statEmitter) {
   var io = socketio.listen(server);
   io.set('log level', isProduction ? 1 : 2);
   io.sockets.on('connection', function (socket) {
-    socket.emit('config', config.renderingConfig);
+    socket.emit('config', config);
 
     function sendSample(sample) {
       socket.emit('sample', sample);
@@ -101,6 +101,16 @@ function concatArgs(via, command, args) {
     command = args.shift();
   }
   return {command: command, args: args };
+}
+
+function getHost(via) {
+  if (!via) { return 'local'; }
+
+  if (via.match(/^\s*ssh\b/)) {
+    return _.last(via.split(/\s+/));
+  }
+
+  return undefined;
 }
 
 function getUname(via, callback) {
@@ -181,7 +191,11 @@ getUname(argv.via, function (uname) {
     default: 'index.html'
   }));
 
-  setupSocketIO(server, config, isProduction, statEmitter);
+  var browserConfig = _.cloneDeep(config.renderingConfig);
+  browserConfig.tool = config.tool;
+  browserConfig.host = getHost(argv.via);
+
+  setupSocketIO(server, browserConfig, isProduction, statEmitter);
   runServer(server, port);
 
   if (argv.demo) {

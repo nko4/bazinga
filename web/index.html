@@ -35,7 +35,7 @@
   <div class="ink-grid">
     <header>
       <h1 class="pull-left medium-100 small-100">
-          Statzinga<small>vmstat the shit out of your servers</small>
+          Stat Charter<small>{{ config.tool }} the shit out of your servers</small>
         <iframe src="http://nodeknockout.com/iframe/bazinga" frameborder=0 scrolling=no allowtransparency=true width=115 height=25></iframe>
       </h1>
       <nav class="ink-navigation pull-right medium-100 small-100">
@@ -44,7 +44,7 @@
         </ul>
       </nav>
     </header>
-    <div class=""><h3>Host: {{ host }}</h3></div>
+    <div class="" ng-if="config.host"><h3>Host: {{ config.host }}</h3></div>
     <div id="{{chart.name}}" ng-repeat="chart in charts" class="column-group vertical-space">
       <div class="large-80 medium-80 small-100">
         <h2>{{chart.name}}</h2>

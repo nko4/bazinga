@@ -1,0 +1,30 @@
+Darwin alnitak.orion 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27 PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64
+
+$ iostat -c 5 1
+          disk0       cpu     load average
+    KB/t tps  MB/s  us sy id   1m   5m   15m
+   17.36  13  0.22  36  9 55  2.22 1.67 1.90
+    0.00   0  0.00   4  4 92  2.22 1.67 1.90
+    0.00   0  0.00   7  6 88  2.22 1.67 1.90
+    5.14  14  0.07   5  5 90  2.22 1.67 1.90
+    4.00   1  0.00   8  7 85  2.22 1.67 1.90
+
+$ vm_stat -c4 1
+Mach Virtual Memory Statistics: (page size of 4096 bytes)
+    free   active   specul inactive throttle    wired  prgable   faults     copy    0fill reactive   purged file-backed anonymous cmprssed cmprssor  dcomprs   comprs  pageins  pageout  swapins swapouts
+  247934   832409    52004   551927        0   224593     6573  375446K 20211670  110733K   626110    37920      600894    835446   229206   122655   311008   499740  1097981     4779        0        0
+  247569   831785    52004   551927        0   225248     6573     3580      119      664        0        0      600894    834822   229206   122655        2        0        0        0        0        0
+  247780   831781    52004   551927        0   225256     6558     3098      118      196        0        0      600894    834818   229206   122655        2        0        0        0        0        0
+  248190   831493    52004   551927        0   225233     6558     3552      119      600        0        0      600894    834530   229206   122655        2        0        0        0        0        0
+
+Linux bazinga.2013.nodeknockout.com 3.8.6-joyent-ubuntu-12-opt #1 SMP Tue Apr 9 01:13:00 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
+
+linux
+
+$ vmstat 1
+procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa
+ 0  0      0  51488  99228 296548    0    0     0     5    8    4  0  0 100  0
+ 0  0      0  51480  99228 296548    0    0     0     0   19   15  0  0 100  0
+ 0  0      0  51480  99228 296548    0    0     0     0   11    7  0  0 100  0
+

@@ -22,5 +22,8 @@
     "angular": "1.2.0",
     "angular-socket-io": "~0.2.0",
     "lodash": "~2.2.1"
+  },
+  "resolutions": {
+    "angular": "1.2.0"
   }
 }

@@ -89,7 +89,9 @@ angular.module('statCharterApp', ['btford.socket-io']).
       return graph;
     }
 
-    var update = function firstUpdate() {
+    var update;
+
+    function firstUpdate() {
       $scope.config.order.forEach(function (chartName, chartIdx) {
         $scope.charts[chartIdx].graph =
           createChart($('#' + chartName),

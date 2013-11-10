@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Stat Charter</title>
+  <title>Nodestatus</title>
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="HandheldFriendly" content="True">
@@ -48,7 +48,7 @@
     <div class="" ng-if="config.host"><h2>Host: {{ config.host }} ({{ config.tool }})</h2></div>
     <div id="{{chart.name}}" ng-repeat="chart in charts" class="column-group vertical-space">
       <div class="large-80 medium-80 small-100">
-        <h3>{{chart.name}}</h3>
+        <h3>{{ chart.name }}</h3>
         <div id="chart_container">
           <div class="chart"></div>
           <div class="timeline"></div>
@@ -63,13 +63,9 @@
   <footer>
     <div class="ink-grid">
       <nav class="ink-navigation push-left medium-100 small-100 small-push-left">
-        <ul class="menu horizontal">
-          <!-- <li class="active"><a href="#">item</a></li> -->
-          <!-- <li><a href="#">item</a></li> -->
-          <!-- <li><a href="#">item</a></li> -->
-        </ul>
+        <ul class="menu horizontal"></ul>
       </nav>
-      <p class="content-center small-100">Copyright &copy; the NKO4 Bazinga Team</p>
+      <p class="content-center small-100">Copyright &copy; the NKO4 <a href="http://nodeknockout.com/teams/bazinga">Bazinga Team</a></p>
     </div>
   </footer>
 

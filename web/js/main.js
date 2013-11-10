@@ -5,10 +5,8 @@ angular.module('statCharterApp', ['btford.socket-io']).
   controller('StatCharterController', ['$scope',
                              function ( $scope ) {
 
-    $scope.host = 'foobar.com';
-
     function createChart(element, fields, data, chartType) {
-      var palette = new Rickshaw.Color.Palette( { scheme: 'munin' } );
+      var palette = new Rickshaw.Color.Palette( { scheme: 'spectrum2000' } );
 
       // instantiate our graph!
 
@@ -18,6 +16,8 @@ angular.module('statCharterApp', ['btford.socket-io']).
         stroke: chartType !== 'stacked',
         preserve: true,
         series: data.map(function (serie, idx) {
+          palette.color();
+          palette.color();
           return {
             color: palette.color(),
             data: serie,

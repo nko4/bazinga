@@ -114,6 +114,27 @@ function getUname(via, callback) {
   });
 }
 
+function runDemo(config, updateInterval, statEmitter) {
+  var toolOutput = fs.readFileSync(__dirname + '/demo/' + config.tool +'.mac').
+    toString().split(/\r?\n/);
+  var nextLine = 300;
+  var emitter = lineParser(config, statEmitter);
+  function replayer() {
+    emitter(toolOutput[nextLine]);
+    if (toolOutput[nextLine].match(/^Mach/)) {
+      emitter(toolOutput[++nextLine]);
+      emitter(toolOutput[++nextLine]);
+      nextLine++;
+    } else {
+      if (++nextLine === toolOutput.length) {
+        nextLine = 0;
+        replayer();
+      }
+    }
+  }
+  setInterval(replayer, updateInterval * 1000);
+}
+
 function spawnTool(via, config, statEmitter) {
   var spawnArgs = concatArgs(via, config.command, config.args);
   var p = spawn(spawnArgs.command, spawnArgs.args);
@@ -124,21 +145,27 @@ var argv = require('optimist').
   usage('Watch system stats.\nUsage: $0 [--no-open] <tool> [interval]').
   describe('open', 'Open browser').
   describe('via', 'Execute tool via command, eg: --via "ssh me@my.server"').
+  describe('demo', 'Demo mode - reads demo/vmstat.mac in a loop').
   boolean('open').
   string('via', null).
+  boolean('demo').
   default('open', true).
   argv;
 
 getUname(argv.via, function (uname) {
   var tool = argv._[0];
-  var updateInterval = argv._.length > 1 ? parseInt(argv._[1], 10) : 1;
+  var updateInterval = argv._.length > 1 ? parseFloat(argv._[1]) : 1;
+
+  if (argv.demo) {
+    uname = 'Darwin Kernel Version 13.0.0';
+  }
 
   var config = createConfig(uname,
                             { updateInterval: updateInterval,
                               tool: tool });
 
   if (!config) {
-    console.log('Tool not found');
+    console.log('Tool ' + argv._[0] + ' not found on your OS.');
     process.exit(1);
   }
 
@@ -157,7 +184,11 @@ getUname(argv.via, function (uname) {
   setupSocketIO(server, config, isProduction, statEmitter);
   runServer(server, port);
 
-  spawnTool(argv.via, config, statEmitter);
+  if (argv.demo) {
+    runDemo(config, updateInterval, statEmitter);
+  } else {
+    spawnTool(argv.via, config, statEmitter);
+  }
 
   if (!isProduction && argv.open) {
     require('open')('http://127.0.0.1:' + port);

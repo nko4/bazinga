@@ -146,6 +146,12 @@ angular.module('statCharterApp', ['btford.socket-io']).
         $scope.fieldMap[idx].push({ x: sample.time / 1000, y: value });
       });
 
+      if ($scope.fieldMap[0].length > 1000) {
+        _.values($scope.fieldMap).forEach(function (v) {
+          v.shift();
+        });
+      }
+
       update();
     });
   }]);

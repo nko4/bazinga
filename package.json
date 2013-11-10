@@ -18,7 +18,8 @@
     "lodash": "~2.2.1",
     "handlebars": "~1.1.2",
     "optimist": "~0.6.0",
-    "open": "0.0.4"
+    "open": "0.0.4",
+    "bower": "~1.2.7"
   },
   "engines": {
     "node": "0.10.x"

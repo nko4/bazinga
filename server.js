@@ -113,11 +113,14 @@ function spawnTool(config, statEmitter) {
 
 runUname(function (uname) {
   var argv = require('optimist').
-    usage('Watch system stats.\nUsage: $0 <tool> [interval]').
-    // describe('tool', 'Tool to use, eg: vmstat, iostat, ...').
+    usage('Watch system stats.\nUsage: $0 [--no-open] <tool> [interval]').
+    describe('open', 'Open browser').
+    boolean('open').
     // describe('interval', 'Uptdate interval').
-    // default('interval', 1).
+    default('open', true).
     argv;
+
+  console.log('argv: ', argv);
 
   var tool = argv._[0];
   var updateInterval = argv._.length > 1 ? parseInt(argv._[1], 10) : 1;
@@ -147,4 +150,8 @@ runUname(function (uname) {
   runServer(server, port);
 
   spawnTool(config, statEmitter);
+
+  if (!isProduction && argv.open) {
+    require('open')('http://127.0.0.1:' + port);
+  }
 });

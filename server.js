@@ -76,7 +76,8 @@ function runServer(server, port) {
 
 function lineParser(config, statEmitter) {
   return function lineParser(line) {
-    if (config.ignorePatterns.some(function(pattern) { return !!line.match(pattern); })) { return; }
+    if (config.ignorePatterns &&
+        config.ignorePatterns.some(function(pattern) { return !!line.match(pattern); })) { return; }
 
     line = line.trim().split(/\s+/);
     if (line[0][0] > '9') { // headers

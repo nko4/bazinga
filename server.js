@@ -75,13 +75,15 @@ function runServer(server, port) {
 }
 
 function lineParser(config, statEmitter) {
+  var headerPattern = config.headerPattern || /^\s*[^0-9\s]/;
+
   return function lineParser(line) {
     if (config.ignorePatterns &&
         config.ignorePatterns.some(function(pattern) { return !!line.match(pattern); })) { return; }
 
-    line = line.trim().split(/\s+/);
-    if (line[0][0] > '9') { // headers
-      config.headers = line;
+    var columns = line.trim().split(/\s+/);
+    if (line.match(headerPattern)) {
+      config.headers = columns;
       config._expectTotals = config.totals;
       statEmitter.emit('headers', config.headers);
     } else {
@@ -89,7 +91,7 @@ function lineParser(config, statEmitter) {
         time: new Date().getTime(),
         totals: config._expectTotals,
         headers: config.headers,
-        data: line.map(function (value) {
+        data: columns.map(function (value) {
           return parseFloat(value, 10);
         })
       });

@@ -187,7 +187,7 @@ getUname(argv.via, function (uname) {
   var server = restify.createServer();
 
   server.get(/\/.*/, restify.serveStatic({
-    directory: './web',
+    directory: __dirname + '/web',
     default: 'index.html'
   }));
 

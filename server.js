@@ -22,11 +22,13 @@ var profiles = fs.readdirSync(__dirname + '/lib/profiles').map(function (filenam
   });
 });
 
-function createConfig(uname, options) {
-  var config = _.cloneDeep(_.find(profiles, function (profile) {
-    return profile.tool === options.tool &&
-           uname.match(profile.unamePattern);
-  }));
+function createConfig(uname, json, options) {
+  var config = json ?
+    JSON.parse(fs.readFileSync(json)) :
+    _.cloneDeep(_.find(profiles, function (profile) {
+      return profile.tool === options.tool &&
+             uname.match(profile.unamePattern);
+    }));
 
   if (!config) return undefined;
 
@@ -79,18 +81,18 @@ function lineParser(config, statEmitter) {
     line = line.trim().split(/\s+/);
     if (line[0][0] > '9') { // headers
       config.headers = line;
-      config._lastWasHeader = true;
+      config._expectTotals = config.totals;
       statEmitter.emit('headers', config.headers);
     } else {
       statEmitter.emit('sample', {
         time: new Date().getTime(),
-        totals: config._lastWasHeader,
+        totals: config._expectTotals,
         headers: config.headers,
         data: line.map(function (value) {
           return parseFloat(value, 10);
         })
       });
-      config._lastWasHeader = false;
+      config._expectTotals = false;
     }
   };
 }
@@ -154,12 +156,14 @@ function spawnTool(via, config, statEmitter) {
 var argv = require('optimist').
   usage('Watch system stats.\nUsage: $0 [--no-open] <tool> [interval]').
   describe('open', 'Open browser').
-  describe('via', 'Execute tool via command, eg: --via "ssh me@my.server"').
-  describe('demo', 'Demo mode - reads demo/vmstat.mac in a loop').
   boolean('open').
-  string('via', null).
-  boolean('demo').
   default('open', true).
+  describe('via', 'Execute tool via command, eg: --via "ssh me@my.server"').
+  string('via', null).
+  describe('demo', 'Demo mode - reads demo/vmstat.mac in a loop').
+  boolean('demo').
+  describe('json', 'Specify tool configuration (check the config-samples dir)').
+  string('json', null).
   argv;
 
 getUname(argv.via, function (uname) {
@@ -171,6 +175,7 @@ getUname(argv.via, function (uname) {
   }
 
   var config = createConfig(uname,
+                            argv.json,
                             { updateInterval: updateInterval,
                               tool: tool });
 

@@ -16,7 +16,8 @@
     "socket.io": "~0.9.16",
     "carrier": "~0.1.13",
     "lodash": "~2.2.1",
-    "handlebars": "~1.1.2"
+    "handlebars": "~1.1.2",
+    "optimist": "~0.6.0"
   },
   "engines": {
     "node": "0.10.x"

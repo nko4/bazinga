@@ -108,9 +108,11 @@ angular.module('statCharterApp', ['btford.socket-io']).
           graph: null
         };
       });
+
+      var sampleFieldIdx = 0;
       $scope.fieldMap = config.order.reduce(function (map, chartName, chartIdx) {
         config.charts[chartName].fields.forEach(function (field, fieldIdx) {
-          map[field] = $scope.charts[chartIdx].data[fieldIdx];
+          map[sampleFieldIdx++] = $scope.charts[chartIdx].data[fieldIdx];
         });
         return map;
       }, {});
@@ -136,8 +138,8 @@ angular.module('statCharterApp', ['btford.socket-io']).
     $scope.$on('socket:sample', function (event, sample) {
       if (sample.totals) { return; } // Ignore total lines
 
-      Object.keys(sample.data).forEach(function (field) {
-        $scope.fieldMap[field].push({ x: sample.time / 1000, y: sample.data[field] });
+      sample.data.forEach(function (value, idx) {
+        $scope.fieldMap[idx].push({ x: sample.time / 1000, y: value });
       });
 
       update();

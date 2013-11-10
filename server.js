@@ -84,10 +84,10 @@ function lineParser(config, statEmitter) {
       statEmitter.emit('sample', {
         time: new Date().getTime(),
         totals: config._lastWasHeader,
-        data: line.reduce(function (event, value, idx) {
-          event[config.headers[idx]] = parseInt(value, 10);
-          return event;
-        }, {})
+        headers: config.headers,
+        data: line.map(function (value) {
+          return parseFloat(value, 10);
+        })
       });
       config._lastWasHeader = false;
     }
@@ -112,9 +112,19 @@ function spawnTool(config, statEmitter) {
 }
 
 runUname(function (uname) {
+  var argv = require('optimist').
+    usage('Watch system stats.\nUsage: $0 <tool> [interval]').
+    // describe('tool', 'Tool to use, eg: vmstat, iostat, ...').
+    // describe('interval', 'Uptdate interval').
+    // default('interval', 1).
+    argv;
+
+  var tool = argv._[0];
+  var updateInterval = argv._.length > 1 ? parseInt(argv._[1], 10) : 1;
+
   var config = createConfig(uname,
-                            { updateInterval: 1,
-                              tool: 'vmstat' });
+                            { updateInterval: updateInterval,
+                              tool: tool });
 
   if (!config) {
     console.log('Tool not found');

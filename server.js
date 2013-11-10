@@ -9,6 +9,10 @@ var carrier = require('carrier');
 var EventEmitter = require('events').EventEmitter;
 var spawn = require('child_process').spawn;
 
+process.on('uncaughtException', function(err) {
+  console.log('Caught exception: ' + err);
+});
+
 var isProduction = (process.env.NODE_ENV === 'production');
 var port = (isProduction ? 80 : 8000);
 
@@ -20,14 +24,18 @@ server.get(/\/.*/, restify.serveStatic({
   default: 'index.html'
 }));
 
+var updateInterval = 1;
+var config = createMacVmStatConfig();
+
 var statEmitter = new EventEmitter();
 
 io.set('log level', isProduction ? 1 : 2);
 io.sockets.on('connection', function (socket) {
+  socket.emit('config', config.renderingConfig);
+
   function sendSample(sample) {
     socket.emit('sample', sample);
   }
-
   statEmitter.on('sample', sendSample)
 
   socket.on('disconnect', function () {
@@ -49,13 +57,33 @@ server.listen(port, function (err) {
   console.log('Server running at http://0.0.0.0:' + port + '/');
 });
 
-var updateInterval = 1;
 function createMacVmStatConfig() {
   function MacVmStatConfig() {
     this.command = 'vm_stat';
     this.args = [updateInterval];
     this.headers = null;
     this._lastWasHeader = false;
+    this.renderingConfig = {
+      order: ['totals', 'pages', 'compressor', 'swap'],
+      charts: {
+        totals: {
+          type: 'stacked',
+          fields: ['free', 'active', 'inactive', 'specul', 'throttle', 'wired', 'prgable'],
+        },
+        pages: {
+          type: 'line',
+          fields: ['faults', 'copy', '0fill', 'reactive', 'purged', 'file-backed', 'anonymous']
+        },
+        compressor: {
+          type: 'line',
+          fields: ['cmprssed', 'cmprssor', 'dcomprs', 'comprs']
+        },
+        swap: {
+          type: 'line',
+          fields: ['pageins', 'pageout', 'swapins', 'swapouts']
+        }
+      }
+    };
   }
 
   MacVmStatConfig.prototype.lineParser = function lineParser(line) {
@@ -84,6 +112,5 @@ function createMacVmStatConfig() {
   return new MacVmStatConfig();
 }
 
-var config = createMacVmStatConfig();
 var p = spawn(config.command, config.args);
 carrier.carry(p.stdout, function (line) { config.lineParser(line); });

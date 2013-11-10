@@ -1,0 +1,28 @@
+body {
+  background: #ededed;
+}
+
+header {
+  padding: 2em 0;
+  margin-bottom: 2em;
+}
+
+header h1 {
+  font-size: 2em;
+}
+
+header h1 small:before  {
+  content: "|";
+  margin: 0 0.5em;
+  font-size: 1.6em;
+}
+
+footer {
+  background: #ccc;
+  color: #0003;
+}
+
+footer p {
+  padding: 0.5em 1em 0.5em 0;
+  margin: 0;
+}

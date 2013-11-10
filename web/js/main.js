@@ -14,7 +14,7 @@ angular.module('statCharterApp', ['btford.socket-io']).
 
       var graph = new Rickshaw.Graph( {
         element: element.find('.chart')[0],
-        renderer: 'area',
+        renderer: chartType === 'line' ? 'line' : 'area',
         stroke: chartType !== 'stacked',
         preserve: true,
         series: data.map(function (serie, idx) {

@@ -24,8 +24,41 @@ server.get(/\/.*/, restify.serveStatic({
   default: 'index.html'
 }));
 
+function createMacVmStatConfig(updateInterval) {
+  function MacVmStatConfig() {
+    this.command = 'vm_stat';
+    this.args = [updateInterval];
+    this.headers = null;
+    this._lastWasHeader = false;
+    this.ignorePatterns = [/Mach Virtual Memory Statistics/];
+    this.renderingConfig = {
+      order: ['totals', 'pages', 'compressor', 'swap'],
+      charts: {
+        totals: {
+          type: 'stacked',
+          fields: ['free', 'active', 'inactive', 'specul', 'throttle', 'wired', 'prgable'],
+        },
+        pages: {
+          type: 'line',
+          fields: ['faults', 'copy', '0fill', 'reactive', 'purged', 'file-backed', 'anonymous']
+        },
+        compressor: {
+          type: 'line',
+          fields: ['cmprssed', 'cmprssor', 'dcomprs', 'comprs']
+        },
+        swap: {
+          type: 'line',
+          fields: ['pageins', 'pageout', 'swapins', 'swapouts']
+        }
+      }
+    };
+  }
+
+  return new MacVmStatConfig();
+}
+
 var updateInterval = 1;
-var config = createMacVmStatConfig();
+var config = createMacVmStatConfig(updateInterval);
 
 var statEmitter = new EventEmitter();
 
@@ -57,60 +90,28 @@ server.listen(port, function (err) {
   console.log('Server running at http://0.0.0.0:' + port + '/');
 });
 
-function createMacVmStatConfig() {
-  function MacVmStatConfig() {
-    this.command = 'vm_stat';
-    this.args = [updateInterval];
-    this.headers = null;
-    this._lastWasHeader = false;
-    this.renderingConfig = {
-      order: ['totals', 'pages', 'compressor', 'swap'],
-      charts: {
-        totals: {
-          type: 'stacked',
-          fields: ['free', 'active', 'inactive', 'specul', 'throttle', 'wired', 'prgable'],
-        },
-        pages: {
-          type: 'line',
-          fields: ['faults', 'copy', '0fill', 'reactive', 'purged', 'file-backed', 'anonymous']
-        },
-        compressor: {
-          type: 'line',
-          fields: ['cmprssed', 'cmprssor', 'dcomprs', 'comprs']
-        },
-        swap: {
-          type: 'line',
-          fields: ['pageins', 'pageout', 'swapins', 'swapouts']
-        }
-      }
-    };
-  }
-
-  MacVmStatConfig.prototype.lineParser = function lineParser(line) {
-    var self = this;
-
-    if (line.match(/Mach Virtual Memory Statistics/)) { return; }
+function lineParser(config) {
+  return function lineParser(line) {
+    if (config.ignorePatterns.some(function(pattern) { return !!line.match(pattern); })) { return; }
 
     line = line.trim().split(/\s+/);
     if (line[0][0] > '9') { // headers
-      this.headers = line;
-      this._lastWasHeader = true;
-      statEmitter.emit('headers', this.headers);
+      config.headers = line;
+      config._lastWasHeader = true;
+      statEmitter.emit('headers', config.headers);
     } else {
       statEmitter.emit('sample', {
         time: new Date().getTime(),
-        totals: this._lastWasHeader,
+        totals: config._lastWasHeader,
         data: line.reduce(function (event, value, idx) {
-          event[self.headers[idx]] = parseInt(value, 10);
+          event[config.headers[idx]] = parseInt(value, 10);
           return event;
         }, {})
       });
-      this._lastWasHeader = false;
+      config._lastWasHeader = false;
     }
-  }
-
-  return new MacVmStatConfig();
+  };
 }
 
 var p = spawn(config.command, config.args);
-carrier.carry(p.stdout, function (line) { config.lineParser(line); });
+carrier.carry(p.stdout, lineParser(config));

@@ -89,7 +89,24 @@ angular.module('statCharterApp', ['btford.socket-io']).
       return graph;
     }
 
-    this.charts = [];
+    var update = function firstUpdate() {
+      $scope.config.order.forEach(function (chartName, chartIdx) {
+        $scope.charts[chartIdx].graph =
+          createChart($('#' + chartName),
+                      $scope.config.charts[chartName].fields,
+                      $scope.charts[chartIdx].data,
+                      $scope.config.charts[chartName].type
+                     );
+      });
+
+      update = nextUpdate;
+    };
+
+    function nextUpdate() {
+      $scope.charts.forEach(function (chart) {
+        chart.graph.update();
+      });
+    }
 
     $scope.$on('socket:config', function (event, config) {
       $scope.config = config;
@@ -109,26 +126,9 @@ angular.module('statCharterApp', ['btford.socket-io']).
         });
         return map;
       }, {});
+
+      update = firstUpdate;
     });
-
-    var update = function firstUpdate() {
-      $scope.config.order.forEach(function (chartName, chartIdx) {
-        $scope.charts[chartIdx].graph =
-          createChart($('#' + chartName),
-                      $scope.config.charts[chartName].fields,
-                      $scope.charts[chartIdx].data,
-                      $scope.config.charts[chartName].type
-                     );
-      });
-
-      update = nextUpdate;
-    };
-
-    function nextUpdate() {
-      $scope.charts.forEach(function (chart) {
-        chart.graph.update();
-      });
-    }
 
     $scope.$on('socket:sample', function (event, sample) {
       if (sample.totals) { return; } // Ignore total lines

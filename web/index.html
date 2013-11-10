@@ -44,18 +44,16 @@
         </ul>
       </nav>
     </header>
-    <div id="charts" class="column-group vertical-space">
-      <div ng-repeat="chart in charts" id="{{chart.name}}">
-        <div class="large-80 medium-80 small-100">
-          <h2>{{chart.name}}</h2>
-          <div class="chart-container">
-            <div class="chart"></div>
-            <div class="timeline"></div>
-            <div class="slider"></div>
-          </div>
+    <div id="{{chart.name}}" ng-repeat="chart in charts" class="column-group vertical-space">
+      <div class="large-80 medium-80 small-100">
+        <h2>{{chart.name}}</h2>
+        <div class="chart-container">
+          <div class="chart"></div>
+          <div class="timeline"></div>
+          <div class="slider"></div>
         </div>
-        <div class="legend large-20 medium-20 small-100"></div>
       </div>
+      <div class="legend large-20 medium-20 small-100"></div>
     </div>
   </div>
   <footer>

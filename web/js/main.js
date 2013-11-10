@@ -11,8 +11,8 @@ angular.module('statCharterApp', ['btford.socket-io']).
 
       var graph = new Rickshaw.Graph( {
         element: element[0],
-        width: 900,
-        height: 500,
+        width: 700,
+        height: 400,
         renderer: 'area',
         stroke: true,
         preserve: true,

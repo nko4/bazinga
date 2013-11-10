@@ -4,15 +4,16 @@ angular.module('statCharterApp', ['btford.socket-io']).
   }]).
   controller('StatCharterController', ['$scope',
                              function ( $scope ) {
+
+    $scope.host = 'foobar.com';
+
     function createChart(element, fields, data, chartType) {
-      var palette = new Rickshaw.Color.Palette( { scheme: 'spectrum2000' } );
+      var palette = new Rickshaw.Color.Palette( { scheme: 'munin' } );
 
       // instantiate our graph!
 
       var graph = new Rickshaw.Graph( {
         element: element.find('.chart')[0],
-        width: 400,
-        height: 200,
         renderer: 'area',
         stroke: chartType !== 'stacked',
         preserve: true,

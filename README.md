@@ -15,9 +15,15 @@ Supports vm_stat and iostat on mac, vmstat on linux and other tools via simple j
 
 ## Install
 
+Clone the repo:
+
     git clone git@github.com:nko4/bazinga.git && cd ./bazinga/
 
+Install `npm` dependencies:
+
     npm install
+
+Install `bower` dependencies:
 
     node_modules/.bin/bower install
 
@@ -41,11 +47,19 @@ Watch an unknown tool configured with a user specified config file, don't open a
 
 ## Tools Used
 
-Libraries: Restify Socket.IO angular.js Rickshaw / D3 Lodash Handlebars * optimist
+**Libraries:**
 
-angular, lodash and handlebars were only used to speed up development, probably not used at all for a final product.
+- Restify
+- Socket.IO
+- Angular.js
+- Rickshaw / D3
+- Lodash
+- Handlebars
+- optimist
 
-CSS Toolkit: Ink (Includes Font Awesome)
+Angular.js, lodash and handlebars were only used to speed up development, probably not used at all for a final product.
+
+**CSS Toolkit:** [Ink](http://ink.sapo.pt) (Includes Font Awesome)
 
 ## License
 

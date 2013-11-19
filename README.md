@@ -1,74 +1,52 @@
-## Quick Start
+# Nodestatus
 
-~~~sh
-# getting the code
-git clone git@github.com:nko4/bazinga.git && cd ./bazinga/
+## NOTICE:
+This project was made for the Node Knockout 2013 competition. This repo will not be updated any further. We will post here the link to the new repo where the project will be continued.
 
-# developing
-npm install
-npm start
+## Quick Intro
 
-# deploying (to http://bazinga.2013.nodeknockout.com/)
-./deploy nko
+Run vmstat, iostat, <any>stat remotely and chart it on your browser.
 
-# ssh access
-ssh deploy@bazinga.2013.nodeknockout.com
-ssh root@bazinga.2013.nodeknockout.com
-# or, if you get prompted for a password
-ssh -i ./id_deploy deploy@bazinga.2013.nodeknockout.com
-ssh -i ./id_deploy root@bazinga.2013.nodeknockout.com
-~~~
+## Description
 
-Read more about this setup [on our blog][deploying-nko].
+Runs <whatever>stat command - possibly remotely - and opens a browser with charts for the metrics (made with rickshaw/d3). Charts are updated realtime via socket.io.
 
-[deploying-nko]: http://blog.nodeknockout.com/post/66039926165/node-knockout-deployment-setup
+Supports vm_stat and iostat on mac, vmstat on linux and other tools via simple json config file.
 
-## Tips
+## Install
 
-### Your Server
+    git clone git@github.com:nko4/bazinga.git && cd ./bazinga/
 
-We've already set up a basic node server for you. Details:
+    npm install
 
-* Ubuntu 12.04 (Precise) - 64-bit
-* server.js is at: `/home/deploy/current/server.js`
-* logs are at: `/home/deploy/shared/logs/server/current`
-* `runit` keeps the server running.
-  * `sv restart serverjs` - restarts
-  * `sv start serverjs` - starts
-  * `sv stop serverjs` - stops
-  * `ps -ef | grep runsvdir` - to see logs
-  * `cat /etc/service/serverjs/run` - to see the config
+    node_modules/.bin/bower install
 
-You can use the `./deploy` script included in this repo to deploy to your
-server right now. Advanced users, feel free to tweak.
+## Usage
 
-Read more about this setup [on our blog][deploying-nko].
+Watch a local vmstat collecting samples every 1 s
 
-### Vote KO Widget
+    node server.js vmstat 1
 
-![Vote KO widget](http://f.cl.ly/items/1n3g0W0F0G3V0i0d0321/Screen%20Shot%202012-11-04%20at%2010.01.36%20AM.png)
+Watch a local iostat collecting samples every 1 s
 
-Use our "Vote KO" widget to let from your app directly. Here's the code for
-including it in your site:
+    node server.js iostat 1
 
-~~~html
-<iframe src="http://nodeknockout.com/iframe/bazinga" frameborder=0 scrolling=no allowtransparency=true width=115 height=25>
-</iframe>
-~~~
+Watch a remove vmstat collecting samples every 3 s
 
-### Tutorials & Free Services
+    node server.js --via "ssh deploy@bazinga.2013.nodeknockout.com" vmstat 3
 
-If you're feeling a bit lost about how to get started or what to use, we've
-got some [great resources for you](http://nodeknockout.com/resources),
-including:
+Watch an unknown tool configured with a user specified config file, don't open a new browser
 
-* [How to install node and npm](http://blog.nodeknockout.com/post/65463770933/how-to-install-node-js-and-npm)
-* [Getting started with Express](http://blog.nodeknockout.com/post/65630558855/getting-started-with-express)
-* [OAuth with Passport](http://blog.nodeknockout.com/post/66118192565/getting-started-with-passport)
-* [Going Beyond “Hello World” with Drywall](http://blog.nodeknockout.com/post/65711111886/going-beyond-hello-world-with-drywall)
-* [and many more](http://nodeknockout.com/resources#tutorials)&hellip;
+    node server.js --no-open --json config-samples/mac-vmstat.json vmstat 1
 
-## Have fun!
+## Tools Used
 
-If you have any issues, we're on IRC in #nodeknockout on freenode, email us at
-<help@nodeknockout.com>, or tweet [@node_knockout](https://twitter.com/node_knockout).
+Libraries: Restify Socket.IO angular.js Rickshaw / D3 Lodash Handlebars * optimist
+
+angular, lodash and handlebars were only used to speed up development, probably not used at all for a final product.
+
+CSS Toolkit: Ink (Includes Font Awesome)
+
+## License
+
+Code is licensed under the MIT License

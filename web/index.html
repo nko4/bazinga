@@ -32,7 +32,7 @@
 </head>
 
 <body ng-controller="StatCharterController">
-  <div class="ink-grid" style="display: none;" ng-show="true">
+  <div class="ink-grid">
     <header>
       <h1 class="pull-left medium-100 small-100">
           <a href="/">Nodestatus</a><small>Real-time server stats in your browser</small>
@@ -45,10 +45,10 @@
       </nav>
     </header>
     <br><br>
-    <div ng-if="config.host"><h2>Host: {{ config.host }} ({{ config.tool }})</h2></div>
+    <div ng-if="config.host"><h2>Host: <span ng-bind="config.host"></span> <span ng-bind="'(' + config.tool + ')'"></span></h2></div>
     <div id="{{chart.name}}" ng-repeat="chart in charts" class="column-group vertical-space">
       <div class="large-80 medium-80 small-100">
-        <h3>{{ chart.name }}</h3>
+        <h3 ng-bind="chart.name"></h3>
         <div id="chart_container">
           <div class="chart"></div>
           <div class="timeline"></div>

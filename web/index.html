@@ -32,7 +32,7 @@
 </head>
 
 <body ng-controller="StatCharterController">
-  <div class="ink-grid">
+  <div class="ink-grid" style="display: none;" ng-show="true">
     <header>
       <h1 class="pull-left medium-100 small-100">
           <a href="/">Nodestatus</a><small>Real-time server stats in your browser</small>
@@ -40,14 +40,14 @@
       </h1>
       <nav class="ink-navigation pull-right medium-100 small-100">
         <ul class="menu horizontal black shadowed">
-          <li ng-repeat="chart in charts" ng-class="{active: false}"><a href="#{{chart.name}}" class="ng-cloak" ng-cloak>{{chart.name}}</a></li>
+          <li ng-repeat="chart in charts" ng-class="{active: false}"><a href="#{{chart.name}}">{{chart.name}}</a></li>
         </ul>
       </nav>
     </header>
     <br><br>
-    <div ng-if="config.host"><h2 class="ng-cloak" ng-cloak>Host: {{ config.host }} ({{ config.tool }})</h2></div>
+    <div ng-if="config.host"><h2>Host: {{ config.host }} ({{ config.tool }})</h2></div>
     <div id="{{chart.name}}" ng-repeat="chart in charts" class="column-group vertical-space">
-      <div ng-cloak class="ng-cloak large-80 medium-80 small-100">
+      <div class="large-80 medium-80 small-100">
         <h3>{{ chart.name }}</h3>
         <div id="chart_container">
           <div class="chart"></div>

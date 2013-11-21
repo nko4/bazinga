@@ -40,7 +40,7 @@
       </h1>
       <nav class="ink-navigation pull-right medium-100 small-100">
         <ul class="menu horizontal black shadowed">
-          <li ng-repeat="chart in charts" ng-class="{active: false}"><a href="#{{chart.name}}">{{chart.name}}</a></li>
+          <li ng-repeat="chart in charts" ng-class="{active: false}"><a href="#{{chart.name}}" ng-bind="chart.name"></a></li>
         </ul>
       </nav>
     </header>

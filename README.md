@@ -1,7 +1,12 @@
 # Nodestatus
 
 ## NOTICE:
-This project was made for the Node Knockout 2013 competition. This repo will not be updated any further. We will post here the link to the new repo where the project will be continued.
+This project was made for the Node Knockout 2013 competition. This repo will not be updated any further.
+
+
+### We've moved to:
+
+[https://github.com/R42/nodestatus](https://github.com/R42/nodestatus)
 
 ## Quick Intro
 
